@@ -9,7 +9,6 @@ const HomePage: FC = () => {
 
     useEffect(() => {
         const storedData = localStorage.getItem('quatable');
-        console.log('Хранимые данные:', storedData);
         if (storedData) {
             store.setQuatable(JSON.parse(storedData));
         } else {

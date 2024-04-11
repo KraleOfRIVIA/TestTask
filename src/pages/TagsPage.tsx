@@ -1,30 +1,34 @@
-import {FC, useContext, useEffect} from 'react';
+import { FC, useContext, useEffect } from 'react';
 import QuatableCard from "../components/QuatableCard.tsx";
-import {Context} from "../main.tsx";
-import {observer} from "mobx-react-lite";
-import {Grid, Typography} from "@mui/material";
+import { Context } from "../main.tsx";
+import { observer } from "mobx-react-lite";
+import { Grid, Typography } from "@mui/material";
+import {useParams} from "react-router-dom";
 
-interface TagsProps {
-    tags: string
-}
-const TagsPage: FC<TagsProps> = ({tags}) => {
-    const {store} = useContext(Context)
 
+
+const TagsPage: FC = () => {
+    const { store } = useContext(Context);
+    const { name = '' } = useParams<{ name?: string }>();
     useEffect(() => {
-        const storedData = localStorage.getItem('quatableWithTags');
-        console.log('Хранимые данные:', storedData);
-        if (!storedData) {
-            store.getQuatableByTag(tags);
+        // Попытка извлечь данные из локального хранилища для конкретного тега
+        const storedData = localStorage.getItem(`quatableWithTags_${name}`);
+        if (storedData) {
+            // Если данные по тегу есть в хранилище, используем их, преобразовав из строки в объект
+            store.setQuatableByTag(name, JSON.parse(storedData));
         } else {
-            store.setQuatableByTag(JSON.parse(storedData));
+            // В противном случае запрашиваем данные по тегу
+            store.getQuatableByTag(name);
         }
-    }, []);
+    }, [name, store]); // Добавляем tags и store в массив зависимостей
+
+    const quatables = store.quatableByTag[name] || []; // Получаем цитаты по тегу или пустой массив
 
     return (
         <>
-            <Typography variant="h5">{tags}</Typography>
+            <Typography variant="h5">{name}</Typography>
             <Grid container spacing={2}>
-                {store.quatableByTag.map((item) => (
+                {quatables.map((item) => (
                     <QuatableCard
                         key={item._id}
                         _id={item._id}
@@ -36,6 +40,7 @@ const TagsPage: FC<TagsProps> = ({tags}) => {
                 ))}
             </Grid>
         </>
-    )
-}
+    );
+};
+
 export default observer(TagsPage);

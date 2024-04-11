@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Button, Card, CardContent, Grid, Typography} from '@mui/material';
+import { Card, CardContent, Checkbox, Grid, Typography} from '@mui/material';
 import { Context } from '../main.tsx';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
 
 interface QuatableCardProps {
     _id: string;
@@ -36,7 +38,7 @@ const QuatableCard: React.FC<QuatableCardProps> = ({ _id, content, author, tags,
                     <Typography>
                         {tags}
                     </Typography>
-                    <Button onClick={handleLike}>{liked ? 'Удалить лайк' : 'Поставить лайк'}</Button>
+                    <Checkbox onClick={handleLike} checked={liked} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
                 </CardContent>
             </Card>
         </Grid>

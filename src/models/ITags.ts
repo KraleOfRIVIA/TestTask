@@ -1,5 +1,5 @@
-import {IQuatable} from "./IQuatable.ts";
-
 export interface ITags{
-[tag:string] : [IQuatable]
+    id : string
+    name: string
+    quoteCount: number
 }
