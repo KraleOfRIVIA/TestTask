@@ -2,7 +2,7 @@ import { FC, useContext, useEffect } from 'react';
 import TagElement from "../components/TagElement.tsx";
 import { Context } from "../main.tsx";
 import { observer } from "mobx-react-lite";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 
 const TagsList: FC = () => {
@@ -18,6 +18,7 @@ const TagsList: FC = () => {
     }, []); // Добавляем tags и store в массив зависимостей
     return (
         <>
+            <Typography variant="h5">{}</Typography>
             <Grid container spacing={2}>
                 {store.tags.map((item) => (
                  <TagElement
